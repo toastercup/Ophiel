@@ -1,0 +1,90 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>SCORM API Test</title>
+    <script type="text/javascript" src="../lib/json.js"></script>
+    <script type="text/javascript" src="../lib/session.js"></script>
+    <script type="text/javascript" src="../lib/AjaxRequest.js"></script>
+    <script type="text/javascript" src="./Tools.js"></script>
+    <script type="text/javascript" src="./datamodel/DataModelValidator.js"></script>
+    <script type="text/javascript" src="./datamodel/DataModel.js"></script>
+    <script type="text/javascript" src="./datamodel/cmi/CMIRequest.js"></script>
+    <script type="text/javascript" src="./datamodel/DataManager.js"></script>
+    <script type="text/javascript" src="./SCORM_API.js"></script>
+    <script type="text/javascript">
+        function begin() {
+            var mOldDebugElement, mApiInstance, mInitReturnedResult, mLastError, mErrorString, mValidatorInstance, mRetrievedValue;
+            mOldDebugElement = document.getElementById('debug');
+            mOldDebugElement.setAttribute('data-curindex', '-1');
+            debugAdd('::Debug Enabled::', kColor_Info);
+
+            mApiInstance = new apiClass();
+            mInitReturnedResult = mApiInstance.LMSInitialize(kEmptyString);
+
+            if (mInitReturnedResult === kCMIBooleanTrue) {
+                debugAdd('Success: init LMS', kColor_Success);
+            }
+            else {
+                mLastError = mApiInstance.LMSGetLastError();
+                mErrorString = mApiInstance.LMSGetErrorString(mLastError);
+                debugAdd('Failure: init LMS. Code #' + mLastError + ' ' + mErrorString, kColor_Failure);
+            }
+
+            debugAdd('---');
+            mApiInstance.LMSSetValue('cmi.core.student_name', 'Bob Test');
+            debugAdd('---');
+            mLastError = mApiInstance.LMSGetLastError();
+            if (mLastError !== kEmptyString) {
+                debugAdd('Success: Retrieved last error. Code #' + mLastError, kColor_Success);
+            }
+            else {
+                debugAdd('Failure: Could not retrieve last error code.', kColor_Failure);
+            }
+
+            mErrorString = mApiInstance.LMSGetErrorString('101');
+            if (mErrorString !== kEmptyString) {
+                debugAdd('Success: Retrieved error string. Description: ' + mErrorString, kColor_Success);
+            }
+            else {
+                debugAdd('Failure: Error string retrieved was empty?', kColor_Failure);
+            }
+
+            mApiInstance.LMSGetDiagnostic('403');
+
+            mValidatorInstance = new DataModelValidator();
+
+            debugAdd('Testing DataValidator with CMIBoolean ("false"): ' + mValidatorInstance.checkBoolean('false'), kColor_Info);
+            debugAdd('Testing DataValidator with CMIDecimal (5.0): ' + mValidatorInstance.checkDecimal('5.0'), kColor_Info);
+            debugAdd('Testing DataValidator with Vocab Check ("normal"): ' + mValidatorInstance.checkVocabulary('Mode', 'normal'), kColor_Info);
+
+            debugAdd('Testing DataValidator with Time (00:00): ' + mValidatorInstance.checkTime('Mode', '00:00'), kColor_Info);
+            debugAdd('There are many more validator methods I have created that should be tested. Instead of testing them all here, check the Unit Tester.', kColor_Warning);
+
+            debugAdd('---');
+            debugAdd('Retrieved Value: ' + this.LMSGetValue('cmi.suspend_data._children'), kColor_Success);
+            debugAdd('---');
+            debugAdd('Retrieved Value: ' + this.LMSGetValue('cmi.objectives.0.score.min'), kColor_Success);
+            debugAdd('---');
+            debugAdd('Set Value Success: ' + this.LMSSetValue('cmi.interactions.1.correct_responses.1.pattern,44'), kColor_Success);
+            debugAdd('---');
+            debugAdd('Set Value Success: ' + this.LMSSetValue('cmi.core.score.raw,2.0'), kColor_Success);
+            debugAdd('---');
+            debugAdd('Test Retrieving the Set Value', kColor_Info);
+            mRetrievedValue = this.LMSGetValue('cmi.core.score.raw');
+            if (mRetrievedValue == 2.0) {
+                debugAdd('MATCHES. Value: ' + mRetrievedValue, kColor_Success);
+            }
+            else {
+                debugAdd('FAILURE. What is wrong with you? Value: ' + mRetrievedValue + ' Last Error: #' + this.LMSGetLastError(), kColor_Failure);
+            }
+            mApiInstance.LMSFinish(kEmptyString);
+        }
+    </script>
+</head>
+<body onload="begin()">
+<div data-curindex="-1" id="debug">
+</div>
+---
+</body>
+</html>

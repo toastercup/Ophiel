@@ -1,0 +1,10 @@
+Description of directories:
+
+./ = This directory. Contains README and other possible information, and is the parent directory for the SCORM API implemented in JavaScript.
+./doc/ = All documentation for /src/ can be found here.
+./lib/ = These are various libraries the script relies on. (i.e. JSON Parser, JS Sessions, Jasmine)
+./server/ = Server-side code is contained here, which receives LMSCommit()'s and parses them accordingly, as well as other functions.
+./spec/ = All Unit Tests are defined here. You can also run them in this directory through 'index.html'
+./src/ = Here lies the actual source code for the launcher. You can also run 'index.html' to get some very basic debug tests, but nothing as comprehensive as /spec/.
+./src/datamodel/ = Contained within is the management and validation of our supported data models.
+./src/datamodel/cmi/ = The CMI data model is defined in this directory. It is currently the only supported data model for the launcher.

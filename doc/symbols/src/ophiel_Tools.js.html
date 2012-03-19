@@ -1,0 +1,316 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/// &lt;reference path="../lib/session.js"/></span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="COMM">/// &lt;reference path="./AjaxRequest.js"/></span><span class="WHIT">
+<span class='line'>  3</span> 
+<span class='line'>  4</span> </span><span class="COMM">/**
+<span class='line'>  5</span> * @author Alex Tharp, CareerBuilder.com
+<span class='line'>  6</span> * @version 1.0
+<span class='line'>  7</span> *
+<span class='line'>  8</span> * Just a bunch of global tools. These should be part of a Tools class, which I will be adding later.
+<span class='line'>  9</span> */</span><span class="WHIT">
+<span class='line'> 10</span> 
+<span class='line'> 11</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">kDebug</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Info</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Success</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Failure</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kCMIBooleanFalse</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kCMIBooleanTrue</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kErrorStringArray</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="NAME">kDebug</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="NAME">kEmptyString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="NAME">kColor_Info</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'#3BD3F5'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="NAME">kColor_Success</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'#009E03'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="NAME">kColor_Failure</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'#CF1313'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="NAME">kColor_Warning</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'#BA9218'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="NAME">kCMIBooleanFalse</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'false'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="NAME">kCMIBooleanTrue</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'true'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> 
+<span class='line'> 22</span> </span><span class="NAME">kErrorStringArray</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">    </span><span class="STRN">"0"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"No error"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">    </span><span class="STRN">"101"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"General exception"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">    </span><span class="STRN">"201"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Invalid argument error"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">    </span><span class="STRN">"202"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Element cannot have children"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">    </span><span class="STRN">"203"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Element not an array - cannot have count"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">    </span><span class="STRN">"301"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Not initialized"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">    </span><span class="STRN">"401"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Not implemented error"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">    </span><span class="STRN">"402"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Invalid set value, element is a keyword"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">    </span><span class="STRN">"403"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Element is read only"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">    </span><span class="STRN">"404"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Element is write only"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">    </span><span class="STRN">"405"</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"Incorrect data type"</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> 
+<span class='line'> 36</span> </span><span class="COMM">/**
+<span class='line'> 37</span> * Adds debug output to the Web page. Checks if kDebug is true before executing.
+<span class='line'> 38</span> *
+<span class='line'> 39</span> * @param {String} debugText (What will be written to new DIV)
+<span class='line'> 40</span> * @param {String} debugColor (Pass a kColor_XXX constant here. Will be the DIV style's text color)
+<span class='line'> 41</span> * @returns {number} mNewIndex (Latest debug DIV index added)
+<span class='line'> 42</span> */</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="NAME">debugText</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">debugColor</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">kDebug</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">        </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">mNewIndex</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mNewDiv</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mDivIdName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mDebugElement</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.getElementById</span><span class="PUNC">(</span><span class="STRN">'debug'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">        </span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">debugColor</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">            </span><span class="NAME">debugColor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'#FFFFFF'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">        </span><span class="NAME">mNewIndex</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">mDebugElement.getAttribute</span><span class="PUNC">(</span><span class="STRN">"data-curindex"</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">        </span><span class="NAME">mNewDiv</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.createElement</span><span class="PUNC">(</span><span class="STRN">'div'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">        </span><span class="NAME">mDivIdName</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'debug'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">mNewIndex.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'Div'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">        </span><span class="NAME">mDebugElement.setAttribute</span><span class="PUNC">(</span><span class="STRN">"data-curindex"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mNewIndex.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">        </span><span class="NAME">mNewDiv.setAttribute</span><span class="PUNC">(</span><span class="STRN">'id'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">mDivIdName</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">        </span><span class="NAME">mNewDiv.setAttribute</span><span class="PUNC">(</span><span class="STRN">'style'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'background-color: '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">debugColor</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">';'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">        </span><span class="NAME">mNewDiv.innerHTML</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">debugText</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">        </span><span class="NAME">mDebugElement.appendChild</span><span class="PUNC">(</span><span class="NAME">mNewDiv</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">mNewIndex</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 61</span> 
+<span class='line'> 62</span> </span><span class="COMM">/**
+<span class='line'> 63</span> * Can detect if the browser is IE without sniffing user-agents.
+<span class='line'> 64</span> * Usage: if(ie) detects if it's IE period. ie => 6, etc, would detect
+<span class='line'> 65</span> * if IE version is => 6. Not written by me.
+<span class='line'> 66</span> *
+<span class='line'> 67</span> * @return {Boolean}
+<span class='line'> 68</span> */</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ie</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 70</span> 
+<span class='line'> 71</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">undef</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="WHIT">        </span><span class="NAME">v</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="WHIT">        </span><span class="NAME">div</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">document.createElement</span><span class="PUNC">(</span><span class="STRN">'div'</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">        </span><span class="NAME">all</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">div.getElementsByTagName</span><span class="PUNC">(</span><span class="STRN">'i'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> 
+<span class='line'> 76</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">        </span><span class="NAME">div.innerHTML</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'&lt;!--[if gt IE '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">++</span><span class="NAME">v</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">']>&lt;i>&lt;/i>&lt;![endif]-->'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">        </span><span class="NAME">all</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT">
+<span class='line'> 79</span> </span><span class="WHIT">    </span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> 
+<span class='line'> 81</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">v</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">4</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">v</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">undef</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> 
+<span class='line'> 83</span> </span><span class="PUNC">}</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> 
+<span class='line'> 85</span> </span><span class="COMM">/**
+<span class='line'> 86</span> * Sends data to the server page asynchronously.
+<span class='line'> 87</span> *
+<span class='line'> 88</span> * @param {Object} sendData (Data to be encoded and send to the server page)
+<span class='line'> 89</span> */</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">runAjax</span><span class="PUNC">(</span><span class="NAME">sendData</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">urlPath</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 92</span> 
+<span class='line'> 93</span> </span><span class="WHIT">    </span><span class="COMM">// FFffff, really, IE??</span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ie</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">        </span><span class="NAME">urlPath</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'http://'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">window.location.hostname</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'/SCORM/server/'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">        </span><span class="NAME">urlPath</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'../server/'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>100</span> 
+<span class='line'>101</span> </span><span class="WHIT">    </span><span class="NAME">AjaxRequest.post</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">        </span><span class="STRN">'parameters'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="STRN">'data'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">encodeURIComponent</span><span class="PUNC">(</span><span class="NAME">sendData</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">        </span><span class="STRN">'url'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">urlPath</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'parse.php'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">        </span><span class="STRN">'onLoading'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Sent Data to Server...'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Info</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">        </span><span class="STRN">'onSuccess'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">req</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">            </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">trim</span><span class="PUNC">(</span><span class="NAME">escape</span><span class="PUNC">(</span><span class="NAME">req.responseText</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'success'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">                </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Commit Success response received.'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Success</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">            </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">                </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Server reported failure during AJAX request! Message: '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">escape</span><span class="PUNC">(</span><span class="NAME">req.responseText</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Failure</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">        </span><span class="STRN">'onError'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">req</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">setError</span><span class="PUNC">(</span><span class="STRN">'101'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Commit Error!\nStatusText='</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">escape</span><span class="PUNC">(</span><span class="NAME">req.statusText</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'\nContents='</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">escape</span><span class="PUNC">(</span><span class="NAME">req.responseText</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Failure</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>116</span> 
+<span class='line'>117</span> </span><span class="COMM">/**
+<span class='line'>118</span> * Sends data to the server page asynchronously.
+<span class='line'>119</span> *
+<span class='line'>120</span> * @param {Number} number (Number to be padded)
+<span class='line'>121</span> * @param {Number} length (Length to pad to)
+<span class='line'>122</span> * @returns {String} str (Outputted padded number)
+<span class='line'>123</span> */</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">pad</span><span class="PUNC">(</span><span class="NAME">number</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">str</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">number</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">str.length</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">        </span><span class="NAME">str</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'0'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">str</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>131</span> 
+<span class='line'>132</span> </span><span class="COMM">/**
+<span class='line'>133</span> * The LMS-managed course timer. It is used to time course if SCO does not already do so.
+<span class='line'>134</span> */</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">CourseTimer</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">timeDiff</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">startTime</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">endTime</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">seconds</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">minutes</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">hours</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>137</span> 
+<span class='line'>138</span> </span><span class="WHIT">    </span><span class="NAME">this.start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">        </span><span class="NAME">startTime</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> 
+<span class='line'>142</span> </span><span class="WHIT">    </span><span class="NAME">this.stop</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">        </span><span class="NAME">endTime</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>145</span> 
+<span class='line'>146</span> </span><span class="WHIT">    </span><span class="NAME">this.clear</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">        </span><span class="NAME">startTime</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">        </span><span class="NAME">endTime</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> 
+<span class='line'>151</span> </span><span class="WHIT">    </span><span class="NAME">this.buildTimeString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">        </span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">endTime</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">startTime</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">        </span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1000</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">        </span><span class="NAME">seconds</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">        </span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.round</span><span class="PUNC">(</span><span class="NUMB">60</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="WHIT">        </span><span class="NAME">minutes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">60</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> </span><span class="WHIT">        </span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.round</span><span class="PUNC">(</span><span class="NUMB">60</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>158</span> </span><span class="WHIT">        </span><span class="NAME">hours</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">%</span><span class="WHIT"> </span><span class="NUMB">24</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">        </span><span class="NAME">timeDiff</span><span class="WHIT"> </span><span class="PUNC">/</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Math.round</span><span class="PUNC">(</span><span class="NUMB">24</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>160</span> 
+<span class='line'>161</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">pad</span><span class="PUNC">(</span><span class="NAME">hours</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">':'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pad</span><span class="PUNC">(</span><span class="NAME">minutes</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">':'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pad</span><span class="PUNC">(</span><span class="NAME">seconds</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>162</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>164</span> 
+<span class='line'>165</span> </span><span class="COMM">/**
+<span class='line'>166</span> * Sets the error code.
+<span class='line'>167</span> *
+<span class='line'>168</span> * @param {String} errorCode
+<span class='line'>169</span> */</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">setError</span><span class="PUNC">(</span><span class="NAME">errorCode</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>171</span> </span><span class="WHIT">    </span><span class="NAME">Session.set</span><span class="PUNC">(</span><span class="STRN">'lastError'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">errorCode</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>173</span> 
+<span class='line'>174</span> </span><span class="COMM">/**
+<span class='line'>175</span> * Retrieves the last error code.
+<span class='line'>176</span> *
+<span class='line'>177</span> * @return {String} errorCode
+<span class='line'>178</span> */</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">getError</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>180</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Session.get</span><span class="PUNC">(</span><span class="STRN">'lastError'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>182</span> 
+<span class='line'>183</span> </span><span class="COMM">/**
+<span class='line'>184</span> * Trims a string.
+<span class='line'>185</span> *
+<span class='line'>186</span> * @param {String} strToTrim (String to be trimmed)
+<span class='line'>187</span> * @returns {String} Trimmed string
+<span class='line'>188</span> */</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">trim</span><span class="PUNC">(</span><span class="NAME">strToTrim</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">strToTrim.replace</span><span class="PUNC">(</span><span class="REGX">/^\s+|\s+$/g</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>192</span> 
+<span class='line'>193</span> </span><span class="COMM">/**
+<span class='line'>194</span> * Returns an array of tokens of the current StringTokenizer
+<span class='line'>195</span> *
+<span class='line'>196</span> * @member StringTokenizer
+<span class='line'>197</span> * @returns {Array} Set of tokens
+<span class='line'>198</span> */</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">getTokens</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">nextToken</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">start</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">end</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">trimmed</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">counter</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tokens</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.material.indexOf</span><span class="PUNC">(</span><span class="NAME">this.separator</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="WHIT">        </span><span class="NAME">tokens</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.material</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">tokens</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="WHIT">    </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="WHIT">    </span><span class="NAME">end</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.material.indexOf</span><span class="PUNC">(</span><span class="NAME">this.separator</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">start</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">    </span><span class="NAME">counter</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>208</span> 
+<span class='line'>209</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.material.length</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="WHIT"> </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="WHIT">        </span><span class="NAME">nextToken</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.material.substring</span><span class="PUNC">(</span><span class="NAME">start</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">end</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>211</span> 
+<span class='line'>212</span> </span><span class="WHIT">        </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">end</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>213</span> 
+<span class='line'>214</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.material.indexOf</span><span class="PUNC">(</span><span class="NAME">this.separator</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>215</span> </span><span class="WHIT">            </span><span class="NAME">end</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.material.length</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="WHIT">            </span><span class="NAME">end</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.material.indexOf</span><span class="PUNC">(</span><span class="NAME">this.separator</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">start</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">        </span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">trim</span><span class="PUNC">(</span><span class="NAME">nextToken</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>221</span> 
+<span class='line'>222</span> </span><span class="WHIT">        </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">trimmed.substring</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">this.separator.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">this.separator</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">            </span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">trimmed.substring</span><span class="PUNC">(</span><span class="NAME">this.separator.length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="WHIT">        </span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">trim</span><span class="PUNC">(</span><span class="NAME">trimmed</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>226</span> 
+<span class='line'>227</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">trimmed</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>228</span> </span><span class="WHIT">            </span><span class="KEYW">continue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>229</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">        </span><span class="NAME">tokens</span><span class="PUNC">[</span><span class="NAME">counter</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">trimmed</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">        </span><span class="NAME">counter</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">tokens</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>235</span> 
+<span class='line'>236</span> </span><span class="COMM">/**
+<span class='line'>237</span> * Returns the count of tokens in the current StringTokenizer
+<span class='line'>238</span> *
+<span class='line'>239</span> * @member StringTokenizer
+<span class='line'>240</span> * @returns {Number} Count of tokens
+<span class='line'>241</span> */</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">countTokens</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.tokens.length</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>245</span> 
+<span class='line'>246</span> </span><span class="COMM">/**
+<span class='line'>247</span> * Returns the next token in the current StringTokenizer
+<span class='line'>248</span> *
+<span class='line'>249</span> * @member StringTokenizer
+<span class='line'>250</span> * @returns {String} Next token in set
+<span class='line'>251</span> */</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">nextToken</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">returnToken</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.tokensReturned</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">this.tokens.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>258</span> </span><span class="WHIT">        </span><span class="NAME">returnToken</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.tokens</span><span class="PUNC">[</span><span class="NAME">this.tokensReturned</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="WHIT">        </span><span class="NAME">this.tokensReturned</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">returnToken</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>263</span> 
+<span class='line'>264</span> </span><span class="COMM">/**
+<span class='line'>265</span> * Returns whether there are more tokens in the current StringTokenizer
+<span class='line'>266</span> *
+<span class='line'>267</span> * @member StringTokenizer
+<span class='line'>268</span> * @returns {Boolean} True if there are more tokens
+<span class='line'>269</span> */</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">hasMoreTokens</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.tokensReturned</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">this.tokens.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>278</span> 
+<span class='line'>279</span> </span><span class="COMM">/**
+<span class='line'>280</span> * Returns how many tokens were returned so far in the current StringTokenizer
+<span class='line'>281</span> *
+<span class='line'>282</span> * @member StringTokenizer
+<span class='line'>283</span> * @returns {Number} Count of tokens returned so far
+<span class='line'>284</span> */</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">tokensReturned</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.tokensReturned</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>288</span> 
+<span class='line'>289</span> </span><span class="COMM">/**
+<span class='line'>290</span> * Provides a data structure and set of methods for parsing through a String containing delimited tokens. Author unknown.
+<span class='line'>291</span> * Could be improved later by using prebuilt String member method 'split', but still should retain a lot of the nifty methods here.
+<span class='line'>292</span> *
+<span class='line'>293</span> * @class StringTokenizer Class
+<span class='line'>294</span> * @constructor
+<span class='line'>295</span> * @param {String} material (The value to be tokenized)
+<span class='line'>296</span> * @param {String} separator (The delimiter used in material)
+<span class='line'>297</span> */</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">StringTokenizer</span><span class="PUNC">(</span><span class="NAME">material</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">separator</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">    </span><span class="NAME">this.material</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">material</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="WHIT">    </span><span class="NAME">this.separator</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">separator</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>301</span> </span><span class="WHIT">    </span><span class="NAME">this.getTokens</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">getTokens</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="WHIT">    </span><span class="NAME">this.nextToken</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">nextToken</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="WHIT">    </span><span class="NAME">this.countTokens</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">countTokens</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>304</span> </span><span class="WHIT">    </span><span class="NAME">this.hasMoreTokens</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">hasMoreTokens</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>305</span> </span><span class="WHIT">    </span><span class="NAME">this.tokensReturned</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">tokensReturned</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>306</span> </span><span class="WHIT">    </span><span class="NAME">this.tokens</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.getTokens</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>307</span> </span><span class="WHIT">    </span><span class="NAME">this.tokensReturned</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>309</span> </span></pre></body></html>

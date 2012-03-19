@@ -1,0 +1,529 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/// &lt;reference path="../../lib/json.js"/></span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="COMM">/// &lt;reference path="../../lib/session.js"/></span><span class="WHIT">
+<span class='line'>  3</span> </span><span class="COMM">/// &lt;reference path="../Tools.js"/></span><span class="WHIT">
+<span class='line'>  4</span> </span><span class="COMM">/// &lt;reference path="./DataModel.js"/></span><span class="WHIT">
+<span class='line'>  5</span> </span><span class="COMM">/// &lt;reference path="./cmi/CMIRequest.js"/></span><span class="WHIT">
+<span class='line'>  6</span> </span><span class="COMM">/// &lt;reference path="./DataManager.js"/></span><span class="WHIT">
+<span class='line'>  7</span> 
+<span class='line'>  8</span> </span><span class="COMM">/**
+<span class='line'>  9</span> * Returns the array for the Mode Vocabulary.
+<span class='line'> 10</span> *
+<span class='line'> 11</span> * @member DataModelValidator
+<span class='line'> 12</span> * @returns {Array} Mode Vocabulary
+<span class='line'> 13</span> */</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildModeList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> 
+<span class='line'> 17</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'normal'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'review'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 19</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'browse'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 22</span> 
+<span class='line'> 23</span> </span><span class="COMM">/**
+<span class='line'> 24</span> * Returns the array for the Status Vocabulary.
+<span class='line'> 25</span> *
+<span class='line'> 26</span> * @member DataModelValidator
+<span class='line'> 27</span> * @returns {Array} Status Vocabulary
+<span class='line'> 28</span> */</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildStatusList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 31</span> 
+<span class='line'> 32</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'passed'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'completed'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'failed'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'incomplete'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">4</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'browsed'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">5</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'not attempted'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 40</span> 
+<span class='line'> 41</span> </span><span class="COMM">/**
+<span class='line'> 42</span> * Returns the array for the Exit Vocabulary.
+<span class='line'> 43</span> *
+<span class='line'> 44</span> * @member DataModelValidator
+<span class='line'> 45</span> * @returns {Array} Exit Vocabulary
+<span class='line'> 46</span> */</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildExitList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span> 
+<span class='line'> 50</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'time-out'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'suspend'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'logout'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 56</span> 
+<span class='line'> 57</span> </span><span class="COMM">/**
+<span class='line'> 58</span> * Returns the array for the Credit Vocabulary.
+<span class='line'> 59</span> *
+<span class='line'> 60</span> * @member DataModelValidator
+<span class='line'> 61</span> * @returns {Array} Credit Vocabulary
+<span class='line'> 62</span> */</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildCreditList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> 
+<span class='line'> 66</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'credit'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'no-credit'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 70</span> 
+<span class='line'> 71</span> </span><span class="COMM">/**
+<span class='line'> 72</span> * Returns the array for the Entry Vocabulary.
+<span class='line'> 73</span> *
+<span class='line'> 74</span> * @member DataModelValidator
+<span class='line'> 75</span> * @returns {Array} Entry Vocabulary
+<span class='line'> 76</span> */</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildEntryList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 78</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 79</span> 
+<span class='line'> 80</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'ab-initio'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'resume'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 85</span> 
+<span class='line'> 86</span> </span><span class="COMM">/**
+<span class='line'> 87</span> * Returns the array for the Time Limit Action Vocabulary.
+<span class='line'> 88</span> *
+<span class='line'> 89</span> * @member DataModelValidator
+<span class='line'> 90</span> * @returns {Array} Time Limit Action Vocabulary
+<span class='line'> 91</span> */</span><span class="WHIT">
+<span class='line'> 92</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildTimeLimitActionList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 94</span> 
+<span class='line'> 95</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'exit,message'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'exit,no message'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'continue,message'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">4</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'continue,no message'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>102</span> 
+<span class='line'>103</span> </span><span class="COMM">/**
+<span class='line'>104</span> * Returns the array for the Interaction Vocabulary.
+<span class='line'>105</span> *
+<span class='line'>106</span> * @member DataModelValidator
+<span class='line'>107</span> * @returns {Array} Interaction Vocabulary
+<span class='line'>108</span> */</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildInteractionList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> 
+<span class='line'>112</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'true-false'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'choice'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'fill-in'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'matching'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">4</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'performance'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">5</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'likert'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">6</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'sequencing'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">7</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'numeric'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>122</span> 
+<span class='line'>123</span> </span><span class="COMM">/**
+<span class='line'>124</span> * Returns the array for the Result Vocabulary.
+<span class='line'>125</span> *
+<span class='line'>126</span> * @member DataModelValidator
+<span class='line'>127</span> * @returns {Array} Result Vocabulary
+<span class='line'>128</span> */</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">buildResultList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">list</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> 
+<span class='line'>132</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'correct'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'wrong'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">2</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'unanticipated'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>135</span> </span><span class="WHIT">    </span><span class="NAME">list</span><span class="PUNC">[</span><span class="NUMB">3</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'neutral'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>136</span> 
+<span class='line'>137</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">list</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>139</span> 
+<span class='line'>140</span> </span><span class="COMM">/**
+<span class='line'>141</span> * Verifies that the value is blank
+<span class='line'>142</span> *
+<span class='line'>143</span> * @member DataModelValidator
+<span class='line'>144</span> * @param {String} value (Value to be checked)
+<span class='line'>145</span> * @returns {Boolean} Result of validation
+<span class='line'>146</span> */</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkBlank</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value.length</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">            </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">result</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>156</span> 
+<span class='line'>157</span> </span><span class="COMM">/**
+<span class='line'>158</span> * Verifies that the value is a CMIBoolean
+<span class='line'>159</span> *
+<span class='line'>160</span> * @member DataModelValidator
+<span class='line'>161</span> * @param {String} value (Value to be checked)
+<span class='line'>162</span> * @returns {Boolean} Result of validation
+<span class='line'>163</span> */</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkBoolean</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">kCMIBooleanTrue</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">kCMIBooleanFalse</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>169</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>170</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>171</span> 
+<span class='line'>172</span> </span><span class="COMM">/**
+<span class='line'>173</span> * Verifies that the value is a CMIFeedback (NOT YET IMPLEMENTED!!!!!)
+<span class='line'>174</span> *
+<span class='line'>175</span> * @member DataModelValidator
+<span class='line'>176</span> * @param {String} value (Value to be checked)
+<span class='line'>177</span> * @returns {Boolean} Result of validation
+<span class='line'>178</span> */</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkFeedback</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>180</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>182</span> 
+<span class='line'>183</span> </span><span class="COMM">/**
+<span class='line'>184</span> * Verifies that the value is a CMIString255
+<span class='line'>185</span> *
+<span class='line'>186</span> * @member DataModelValidator
+<span class='line'>187</span> * @param {String} value (Value to be checked)
+<span class='line'>188</span> * @returns {Boolean} Result of validation
+<span class='line'>189</span> */</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkString255</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>192</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value.length</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">255</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>195</span> 
+<span class='line'>196</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>198</span> 
+<span class='line'>199</span> </span><span class="COMM">/**
+<span class='line'>200</span> * Verifies that the value is a CMIString4096
+<span class='line'>201</span> *
+<span class='line'>202</span> * @member DataModelValidator
+<span class='line'>203</span> * @param {String} value (Value to be checked)
+<span class='line'>204</span> * @returns {Boolean} Result of validation
+<span class='line'>205</span> */</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkString4096</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value.length</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">4096</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>209</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>211</span> 
+<span class='line'>212</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>213</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>214</span> 
+<span class='line'>215</span> </span><span class="COMM">/**
+<span class='line'>216</span> * Verifies that the value is a CMIDecimal with added check for normalized score.
+<span class='line'>217</span> *
+<span class='line'>218</span> * @member DataModelValidator
+<span class='line'>219</span> * @param {String} value (Value to be checked)
+<span class='line'>220</span> * @returns {Boolean} Result of validation
+<span class='line'>221</span> */</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkScoreDecimal</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">checkDecimal</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>225</span> 
+<span class='line'>226</span> </span><span class="COMM">/**
+<span class='line'>227</span> * Verifies that the value is a CMIDecimal
+<span class='line'>228</span> *
+<span class='line'>229</span> * @member DataModelValidator
+<span class='line'>230</span> * @param {String} value (Value to be checked)
+<span class='line'>231</span> * @param {Boolean} score (Whether or not this is a Score variant of CMIDecimal)
+<span class='line'>232</span> * @returns {Boolean} Result of validation
+<span class='line'>233</span> */</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkDecimal</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">score</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">tmpDouble</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="REGX">/^\s*(\+|-)?((\d+(\.\d+)?)|(\.\d+))\s*$/</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>236</span> 
+<span class='line'>237</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">checkBlank</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.checkPattern</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">            </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">score</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">                </span><span class="NAME">tmpDouble</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parseFloat</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">                </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">tmpDouble</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0.0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">tmpDouble</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">100.0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">                    </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">                </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>244</span> </span><span class="WHIT">                </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">                    </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' is not a normalized score'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>246</span> </span><span class="WHIT">                    </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'0 &lt;= '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' >= 100'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">                </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">            </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">                </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">            </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' is not a valid CMIDecimal Type'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>256</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>257</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>258</span> </span><span class="WHIT">        </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>260</span> 
+<span class='line'>261</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">result</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>263</span> 
+<span class='line'>264</span> </span><span class="COMM">/**
+<span class='line'>265</span> * Verifies that the value is a valid vocabulary member of the provided Vocab Type
+<span class='line'>266</span> *
+<span class='line'>267</span> * @member DataModelValidator
+<span class='line'>268</span> * @param {String} vocabType (Vocabulary type of Element to be validated)
+<span class='line'>269</span> * @param {String} value (Value to be checked)
+<span class='line'>270</span> * @returns {Boolean} Result of validation
+<span class='line'>271</span> */</span><span class="WHIT">
+<span class='line'>272</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkVocabulary</span><span class="PUNC">(</span><span class="NAME">vocabType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">vocabTypeList</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">tmpString</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> 
+<span class='line'>275</span> </span><span class="WHIT">    </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'checkVocabulary('</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">vocabType</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">', '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">')'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Info</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>276</span> 
+<span class='line'>277</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.vocabulary.hasOwnProperty</span><span class="PUNC">(</span><span class="NAME">vocabType</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">        </span><span class="NAME">vocabTypeList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.vocabulary</span><span class="PUNC">[</span><span class="NAME">vocabType</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>279</span> 
+<span class='line'>280</span> </span><span class="WHIT">        </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">vocabTypeList.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>281</span> </span><span class="WHIT">            </span><span class="NAME">tmpString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">vocabTypeList</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>282</span> 
+<span class='line'>283</span> </span><span class="WHIT">            </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">tmpString</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">                </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">                </span><span class="KEYW">break</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>288</span> 
+<span class='line'>289</span> </span><span class="WHIT">        </span><span class="COMM">//Check to see if the "Results" category is passing in a decimal number</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">vocabType</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'Result'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">            </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.checkDecimal</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">    </span><span class="COMM">// No match found</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">        </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">"'"</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"' is not a valid vocabulary member for the "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">vocabType</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" Vocabulary Type or that Type does not exist."</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>298</span> 
+<span class='line'>299</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>301</span> 
+<span class='line'>302</span> </span><span class="COMM">/**
+<span class='line'>303</span> * Verifies that the value is a CMIIdentifier
+<span class='line'>304</span> *
+<span class='line'>305</span> * @member DataModelValidator
+<span class='line'>306</span> * @param {String} value (Value to be checked)
+<span class='line'>307</span> * @returns {Boolean} Result of validation
+<span class='line'>308</span> */</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkIdentifier</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>311</span> 
+<span class='line'>312</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value.length</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">255</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value.indexOf</span><span class="PUNC">(</span><span class="STRN">' '</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">this.checkBlank</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>315</span> 
+<span class='line'>316</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>318</span> 
+<span class='line'>319</span> </span><span class="COMM">/**
+<span class='line'>320</span> * Verifies that the value is a CMIInteger
+<span class='line'>321</span> *
+<span class='line'>322</span> * @member DataModelValidator
+<span class='line'>323</span> * @param {String} value (Value to be checked)
+<span class='line'>324</span> * @returns {Boolean} Result of validation
+<span class='line'>325</span> */</span><span class="WHIT">
+<span class='line'>326</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkInteger</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">isNaN</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>329</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">65536</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">        </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' is not an Integer'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>336</span> 
+<span class='line'>337</span> </span><span class="COMM">/**
+<span class='line'>338</span> * Verifies that the value is a CMISInteger
+<span class='line'>339</span> *
+<span class='line'>340</span> * @member DataModelValidator
+<span class='line'>341</span> * @param {String} value (Value to be checked)
+<span class='line'>342</span> * @returns {Boolean} Result of validation
+<span class='line'>343</span> */</span><span class="WHIT">
+<span class='line'>344</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkSInteger</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>345</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>346</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">kEmptyString</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">isNaN</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>347</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">parseInt</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">32768</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">&lt;=</span><span class="WHIT"> </span><span class="NUMB">32768</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>348</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>349</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="WHIT">        </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' is not a Signed Integer'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>353</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>354</span> 
+<span class='line'>355</span> </span><span class="COMM">/**
+<span class='line'>356</span> * Verifies that the value is a CMITime (HH:MM:SS.SS)
+<span class='line'>357</span> *
+<span class='line'>358</span> * @member DataModelValidator
+<span class='line'>359</span> * @param {String} value (Value to be checked)
+<span class='line'>360</span> * @returns {Boolean} Result of validation
+<span class='line'>361</span> */</span><span class="WHIT">
+<span class='line'>362</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkTime</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>363</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"^(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])(\.([0-9][0-9]?))?$"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>364</span> 
+<span class='line'>365</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">checkBlank</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.checkPattern</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="WHIT">            </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="WHIT">            </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Value being used for setting: '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' is not in Valid Time Format (HH:MM:SS.SS)'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="WHIT">        </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>376</span> 
+<span class='line'>377</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">result</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>379</span> 
+<span class='line'>380</span> </span><span class="COMM">/**
+<span class='line'>381</span> * Verifies that the value is a CMITimespan
+<span class='line'>382</span> *
+<span class='line'>383</span> * @member DataModelValidator
+<span class='line'>384</span> * @param {String} value (Value to be checked)
+<span class='line'>385</span> * @returns {Boolean} Result of validation
+<span class='line'>386</span> */</span><span class="WHIT">
+<span class='line'>387</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkTimespan</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>388</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">"^([0-9][0-9][0-9]?[0-9]?):([0-5][0-9]):([0-5][0-9])(\.([0-9][0-9]?))?$"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>389</span> 
+<span class='line'>390</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="PUNC">(</span><span class="NAME">checkBlank</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.checkPattern</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>392</span> </span><span class="WHIT">            </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>395</span> </span><span class="WHIT">            </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Value being used for setting: '</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">value</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">' is not in Valid Timespan Format (HHHH:MM:SS.SS)'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Warning</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>396</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="WHIT">        </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>401</span> 
+<span class='line'>402</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">result</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>403</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>404</span> 
+<span class='line'>405</span> </span><span class="COMM">/**
+<span class='line'>406</span> * Validates a string against a RegEx pattern.
+<span class='line'>407</span> *
+<span class='line'>408</span> * @member DataModelValidator
+<span class='line'>409</span> * @param {String} value (Value to be checked)
+<span class='line'>410</span> * @param {String} pattern (RegEx Pattern to check value with)
+<span class='line'>411</span> * @returns {Boolean} Result of validation
+<span class='line'>412</span> */</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">checkPattern</span><span class="PUNC">(</span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>414</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>415</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">value.search</span><span class="PUNC">(</span><span class="NAME">pattern</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>416</span> </span><span class="WHIT">        </span><span class="NAME">flag</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>417</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>418</span> 
+<span class='line'>419</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">flag</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>420</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>421</span> 
+<span class='line'>422</span> </span><span class="COMM">/**
+<span class='line'>423</span> * Verifies that the value is a valid vocabulary member of the provided Vocab Type
+<span class='line'>424</span> *
+<span class='line'>425</span> * @member DataModelValidator
+<span class='line'>426</span> * @param {String} type (Type of Element to be validated)
+<span class='line'>427</span> * @param {String} value (Value to be checked)
+<span class='line'>428</span> * @param {String} vocab (Optional, can be the vocabulary type to be validated)
+<span class='line'>429</span> * @returns {Boolean} Result of validation
+<span class='line'>430</span> */</span><span class="WHIT">
+<span class='line'>431</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">Validate</span><span class="PUNC">(</span><span class="NAME">type</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">vocab</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>432</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>433</span> 
+<span class='line'>434</span> </span><span class="WHIT">    </span><span class="NAME">debugAdd</span><span class="PUNC">(</span><span class="STRN">'Validating DataType ['</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">type</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">']...'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">kColor_Info</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>435</span> 
+<span class='line'>436</span> </span><span class="WHIT">    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">type</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'CMIVocabulary'</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">this.typeArray.hasOwnProperty</span><span class="PUNC">(</span><span class="NAME">type</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>437</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eval</span><span class="PUNC">(</span><span class="STRN">'this.typeArray.'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">type</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'.call(this, vocab, value)'</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>438</span> </span><span class="WHIT">            </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>439</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>440</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>441</span> </span><span class="WHIT">    </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="WHIT">        </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">type</span><span class="WHIT"> </span><span class="KEYW">instanceof</span><span class="WHIT"> </span><span class="NAME">Array</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>443</span> </span><span class="WHIT">            </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NAME">type.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>444</span> </span><span class="WHIT">                </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.typeArray.hasOwnProperty</span><span class="PUNC">(</span><span class="NAME">type</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>445</span> </span><span class="WHIT">                    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eval</span><span class="PUNC">(</span><span class="STRN">'this.typeArray.'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">type</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'.call(this, value)'</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>446</span> </span><span class="WHIT">                        </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="WHIT">                    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">                </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>450</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>451</span> </span><span class="WHIT">        </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>452</span> </span><span class="WHIT">            </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">this.typeArray.hasOwnProperty</span><span class="PUNC">(</span><span class="NAME">type</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>453</span> </span><span class="WHIT">                </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">eval</span><span class="PUNC">(</span><span class="STRN">'this.typeArray.'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">type</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'.call(this, value)'</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>454</span> </span><span class="WHIT">                    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>455</span> </span><span class="WHIT">                </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>456</span> </span><span class="WHIT">            </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>457</span> </span><span class="WHIT">        </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>458</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>459</span> 
+<span class='line'>460</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>461</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>462</span> 
+<span class='line'>463</span> </span><span class="COMM">/**
+<span class='line'>464</span> * Provides a set of methods used to validate vocabulary members and CMI data types.
+<span class='line'>465</span> *
+<span class='line'>466</span> * @class DataModelValidator Class
+<span class='line'>467</span> * @constructor
+<span class='line'>468</span> */</span><span class="WHIT">
+<span class='line'>469</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">DataModelValidator</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>470</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>471</span> 
+<span class='line'>472</span> </span><span class="NAME">DataModelValidator.prototype.buildModeList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildModeList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>473</span> </span><span class="NAME">DataModelValidator.prototype.buildStatusList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildStatusList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>474</span> </span><span class="NAME">DataModelValidator.prototype.buildExitList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildExitList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>475</span> </span><span class="NAME">DataModelValidator.prototype.buildCreditList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildCreditList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>476</span> </span><span class="NAME">DataModelValidator.prototype.buildEntryList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildEntryList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>477</span> </span><span class="NAME">DataModelValidator.prototype.buildTimeLimitActionList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildTimeLimitActionList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>478</span> </span><span class="NAME">DataModelValidator.prototype.buildInteractionList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildInteractionList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>479</span> </span><span class="NAME">DataModelValidator.prototype.buildResultList</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">buildResultList</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>480</span> </span><span class="NAME">DataModelValidator.prototype.checkBlank</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkBlank</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>481</span> </span><span class="NAME">DataModelValidator.prototype.checkBoolean</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkBoolean</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>482</span> </span><span class="NAME">DataModelValidator.prototype.checkFeedback</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkFeedback</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>483</span> </span><span class="NAME">DataModelValidator.prototype.checkString255</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkString255</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>484</span> </span><span class="NAME">DataModelValidator.prototype.checkString4096</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkString4096</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>485</span> </span><span class="NAME">DataModelValidator.prototype.checkScoreDecimal</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkScoreDecimal</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>486</span> </span><span class="NAME">DataModelValidator.prototype.checkDecimal</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkDecimal</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>487</span> </span><span class="NAME">DataModelValidator.prototype.checkVocabulary</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkVocabulary</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>488</span> </span><span class="NAME">DataModelValidator.prototype.checkIdentifier</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkIdentifier</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>489</span> </span><span class="NAME">DataModelValidator.prototype.checkInteger</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkInteger</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>490</span> </span><span class="NAME">DataModelValidator.prototype.checkSInteger</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkSInteger</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>491</span> </span><span class="NAME">DataModelValidator.prototype.checkTime</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkTime</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>492</span> </span><span class="NAME">DataModelValidator.prototype.checkTimespan</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkTimespan</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>493</span> </span><span class="NAME">DataModelValidator.prototype.checkPattern</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">checkPattern</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>494</span> </span><span class="NAME">DataModelValidator.prototype.Validate</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Validate</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>495</span> 
+<span class='line'>496</span> </span><span class="NAME">DataModelValidator.prototype.vocabulary</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>497</span> </span><span class="WHIT">    </span><span class="STRN">'Mode'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildModeList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>498</span> </span><span class="WHIT">    </span><span class="STRN">'Status'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildStatusList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>499</span> </span><span class="WHIT">    </span><span class="STRN">'Exit'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildExitList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>500</span> </span><span class="WHIT">    </span><span class="STRN">'Credit'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildCreditList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>501</span> </span><span class="WHIT">    </span><span class="STRN">'Entry'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildEntryList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>502</span> </span><span class="WHIT">    </span><span class="STRN">'TimeLimitAction'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildTimeLimitActionList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>503</span> </span><span class="WHIT">    </span><span class="STRN">'Interaction'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildInteractionList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>504</span> </span><span class="WHIT">    </span><span class="STRN">'Result'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">buildResultList</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>505</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>506</span> 
+<span class='line'>507</span> </span><span class="NAME">DataModelValidator.prototype.typeArray</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>508</span> </span><span class="WHIT">    </span><span class="STRN">'CMIBlank'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkBlank</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>509</span> </span><span class="WHIT">    </span><span class="STRN">'CMIBoolean'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkBoolean</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>510</span> </span><span class="WHIT">    </span><span class="STRN">'CMIDecimal'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkDecimal</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>511</span> </span><span class="WHIT">    </span><span class="STRN">'CMIScore'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkScoreDecimal</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>512</span> </span><span class="WHIT">    </span><span class="STRN">'CMIFeedback'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkFeedback</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>513</span> </span><span class="WHIT">    </span><span class="STRN">'CMIIdentifier'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkIdentifier</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>514</span> </span><span class="WHIT">    </span><span class="STRN">'CMIInteger'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkInteger</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>515</span> </span><span class="WHIT">    </span><span class="STRN">'CMISInteger'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkSInteger</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>516</span> </span><span class="WHIT">    </span><span class="STRN">'CMIString255'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkString255</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>517</span> </span><span class="WHIT">    </span><span class="STRN">'CMIString4096'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkString4096</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>518</span> </span><span class="WHIT">    </span><span class="STRN">'CMITime'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkTime</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>519</span> </span><span class="WHIT">    </span><span class="STRN">'CMITimespan'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkTimespan</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>520</span> </span><span class="WHIT">    </span><span class="STRN">'CMIVocabulary'</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">checkVocabulary</span><span class="WHIT">
+<span class='line'>521</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>522</span> </span></pre></body></html>
