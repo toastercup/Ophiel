@@ -8,3 +8,5 @@ Description of directories:
 ./src/ = Here lies the actual source code for the launcher. You can also run 'index.html' to get some very basic debug tests, but nothing as comprehensive as /spec/.
 ./src/datamodel/ = Contained within is the management and validation of our supported data models.
 ./src/datamodel/cmi/ = The CMI data model is defined in this directory. It is currently the only supported data model for the launcher.
+
+In addition, please review the "LICENSE" file contained within the root directory for license information.
