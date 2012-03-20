@@ -1,0 +1,2 @@
+-Create an object to store processed elements. Will contain 'read', 'write', etc. status. Won't have to parse the JSON each time we want to check the requested value.
+-JSON parsing, execution needs re-factoring.
